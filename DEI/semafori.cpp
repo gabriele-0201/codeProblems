@@ -12,57 +12,51 @@ int main(void) {
 	cin >> l;
 
     int v;
-    cout << "N: " << n;
     for(int i = 0; i < n; i++){
-
         s.push_back(vector<int> ());
-
-        cout << i   << " " << n;
-        
         for(int j = 0; j < 3; j++){
             cin >> v;
-            cout<<j<<endl;
             s.back().push_back(v);
         }
-        cout<<"uscito dall'aarray";
         s.back().push_back(0);
-        
-        cout << "Insered one";
+        s.back().push_back(-1); //color to be
     }
 
-        cout << "finisched input"<<endl;
 
     bool arrived = false;
     int counter = 0;
     int position = 0;
     while(!arrived) {
         counter++;
+        for(auto i = s.begin(); i != s.end(); i++){ 
 
-        for(int i = 0; i < s.size(); i++){ 
-            if(s[i][3] == 0) {
-                if(counter % s[i][1] == 0) {
-                    s[i][3] == 1;
+            if(i -> at(3) == 0) {
+                if(counter % i -> at(1) == 0) {
+                    i -> at(3) = 1;
                 }
-            }else if(s[i][3] == 1) {
-                if(counter % s[i][2] == 0) {
-                    s[i][3] == 0;
+            }else if(i -> at(3) == 1) {
+                if(counter % i -> at(2) == 0) {
+                    i -> at(3) = 0;
                 }
             }
         }
 
-        if(position == s.front()[0]) {
+        if(!s.empty() && position >= s.front()[0]) {
             s.pop_front();
         }
 
-        if(position < s.front()[0] - 1) {
+        if(!s.empty() && position < s.front()[0] - 1) {
             position++;
-        } else if(position = s.front()[0] - 1) {
+        } else if(!s.empty() && position == s.front()[0] - 1) {
             if(s.front()[3] == 1)
                 position++;
-        } 
+        } else if(s.empty()) {
+            position++;
+        }
 
         if(position >= l)
             arrived = true;
+
     }
     cout << counter;
 
