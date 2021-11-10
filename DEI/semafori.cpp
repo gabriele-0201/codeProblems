@@ -18,8 +18,9 @@ int main(void) {
             cin >> v;
             s.back().push_back(v);
         }
+        s.back().push_back(s.back()[1]);
+        s.back().push_back(s.back()[2]);
         s.back().push_back(0);
-        s.back().push_back(-1); //color to be
     }
 
 
@@ -29,14 +30,17 @@ int main(void) {
     while(!arrived) {
         counter++;
         for(auto i = s.begin(); i != s.end(); i++){ 
-
-            if(i -> at(3) == 0) {
-                if(counter % i -> at(1) == 0) {
-                    i -> at(3) = 1;
+            if(i -> at(5) == 0) {
+                i -> at(1) --;
+                if(i -> at(1) == 0) {
+                    i -> at(5) = 1;
+                    i -> at(1) = i -> at(3);
                 }
-            }else if(i -> at(3) == 1) {
-                if(counter % i -> at(2) == 0) {
-                    i -> at(3) = 0;
+            }else if(i -> at(5) == 1) {
+                i -> at(2) -= 1;
+                if(i -> at(2) == 0) {
+                    i -> at(5) = 0;
+                    i -> at(2) = i -> at(4);
                 }
             }
         }
@@ -48,7 +52,7 @@ int main(void) {
         if(!s.empty() && position < s.front()[0] - 1) {
             position++;
         } else if(!s.empty() && position == s.front()[0] - 1) {
-            if(s.front()[3] == 1)
+            if(s.front()[5] == 1)
                 position++;
         } else if(s.empty()) {
             position++;
