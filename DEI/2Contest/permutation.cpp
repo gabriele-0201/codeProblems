@@ -5,8 +5,7 @@
 
 using namespace std;
 
-unordered_map<int, int> cp1;
-unordered_map<int, int> cp2;
+unordered_multimap<int, int> cp;
 
 vector<string> colors;
 
@@ -34,10 +33,6 @@ int getVal() {
 
 void search() {
 	if(permutation.size() == colors.size()) {
-		//for(int i = 0; i < colors.size(); i++){
-		//	cout << colors[permutation[i]] <<" ";
-		//}
-		//cout <<endl;
 		ctn++;
 
 		int val = getVal();
@@ -60,11 +55,17 @@ void search() {
 
 			if(chosen[i]) continue;
 			if(permutation.size() != 0) {
-				auto itr1 = cp1.find(permutation.back());
-				auto itr2 = cp2.find(permutation.back());
-				if((itr1 != cp1.end() && (itr1 -> second == i)) || (itr2 != cp2.end() && (itr2 -> second == i))) {
-					continue;
+				bool find = false;
+				for(auto itr = cp.begin(); itr != cp.end(); itr++) {
+					if(itr -> first == permutation.back() && itr -> second == i)	
+						find = true;
+					else if(itr -> first == i && itr -> second == permutation.back())	
+						find = true;
 				}
+
+				if(find)
+					continue;
+
 			}
 		
 			chosen[i] = true;
@@ -92,8 +93,7 @@ int main(void) {
 	cin >> t;
 
 	for(int i = 0; i < t; i++) {
-		cp1.clear();
-		cp2.clear();
+		cp.clear();
 		cin >> n;
 		chosen = vector<bool> (n);
 		ctn = 0;
@@ -121,8 +121,10 @@ int main(void) {
 			while(getline(X, color, ' '))
 				couple.push_back(color);
 			
-			cp1[findInColors(couple[0])] = findInColors(couple[1]);
-			cp2[findInColors(couple[1])] = findInColors(couple[0]);
+			int couple1 = findInColors(couple[0]);
+			int couple2 = findInColors(couple[1]);
+			pair<int, int> mypair (couple1, couple2); 
+			cp.insert(mypair);
 		}
 
 		search();
