@@ -1,32 +1,33 @@
 #include <algorithm>
 #include <iostream>
+#include <vector>
+
+using namespace std;
 
 class Solution {
 public:
+
     int brokenCalc(int startValue, int target) {
-        if(startValue == target)
-            return 0;
 
-        int tmp1 = 0,  tmp2 = 0;
+        int rest = target % startValue;
 
-        if(startValue < target) {
-            int mult;
-
-            mult =  target / startValue;
-            
-            tmp1 = mult + brokenCalc(startValue * mult, target);
+        if(rest == 0)
+            return target / startValue;
+        else if(rest <= startValue / 2) {
+            int mult = target / startValue;
+            cout << "m" << mult <<endl;
+            return (mult) + (target - (startValue * mult) );
         }
+        else {
+            int i = 1;
 
-        if((startValue - 1) * 2 >= target) 
-            tmp2 = 1 + brokenCalc(startValue - 1, target);
+            while(target % (startValue - i) != 0)
+                i++;
+            
+            cout << "s" << i <<endl;
 
-        if(tmp1 == 0)
-            return tmp2;
-        if(tmp2 == 0)
-            return tmp1;
-
-        return std::min(tmp1, tmp2);
-
+            return (target / (startValue - i)) - 1 + i;
+        }
     }
 };
 
@@ -34,6 +35,6 @@ int main(void) {
 
     Solution sol;
 
-    std::cout << sol.brokenCalc(2, 3) <<std::endl;
+    std::cout << sol.brokenCalc(3, 10) <<std::endl;
 }
 
